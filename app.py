@@ -39,11 +39,12 @@ app = Dash(__name__,  title="probability distributions")
 app.layout = html.Div([ 
 
     # title
-    html.H1('Scipy Distributions'),
+    html.H1('Scipy Probability Distributions'),
     dcc.Link(html.Img(src="https://www.svgrepo.com/show/449764/github.svg",
                       title="Source code",
                       style={'height':'30px','width':'auto'}),
-             href="https://github.com/nbpub/",id="source-code-link"),
+             href="https://github.com/NBPub/probability_distribution_viz",
+             id="source-code-link"),
     
     # Dropdown Selections
     html.Div([       
@@ -164,6 +165,6 @@ def input_graph(distribution, parameters):
     return fig, fig2, parameters
 
 
-"""Deploy application"""
-if __name__ == '__main__':
-    app.run_server(debug=False)
+"""Deploy application, not needed with WSGI"""
+# if __name__ == '__main__':
+    # app.run_server(debug=False)
