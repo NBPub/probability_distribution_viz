@@ -1,0 +1,87 @@
+/* Page properties */
+body {
+	background-color: black;
+}
+
+/* Text Colors */
+h1 {
+	color: khaki; 
+}
+div {
+	color: honeydew; 
+}
+
+label, p {
+	margin: 25px;
+}
+
+#info-link {
+	font-size:2em;
+	margin-left: 60px;
+	color: limegreen;
+}
+#source-code-link {
+	float:right;
+	position: relative;
+	bottom: 70px;
+	right:20px;
+}
+
+input {
+	padding: 3px 0;
+	font-size:1.1em;
+	width: 100px;
+	text-align:center;
+	background-color:black;
+	border-color:limegreen;
+	color:khaki;
+}
+
+.rc-slider-tooltip-inner  {
+	font-weight:bold;
+	font-size:1.05em;
+	color:khaki;
+}
+
+
+/* input box */
+.Select-control {
+    background-color: black;
+    border-color: honeydew;
+	width: 40vw;
+	margin: 10px;
+	font-size:1.1em;
+}
+
+/* don't change background to white when open (hides search text) */
+.is-open > .Select-control {
+    background-color: black;
+	color: grey;
+}
+
+/* changes the text color of input box */ 
+.Select-value-label {
+    color: limegreen !important;
+}
+
+/* dropdown menu options */
+.VirtualizedSelectOption {
+    background-color: black;
+    color: white;
+ }
+
+/* dropdown menu hover effect */
+.VirtualizedSelectFocusedOption {
+    background-color: black;
+    opacity: .7;
+}
+
+/* border on focus, shadow box around input box - default is blue */
+.is-focused:not(.is-open) > .Select-control {
+	border-color: lightseagreen; 
+	box-shadow: none;
+}
+
+/* Graph */
+.graph-div{border:10px solid black; }
+#graph_content_violin{height:300px;margin-bottom:10px;}
