@@ -2,6 +2,7 @@ import plotly.graph_objects as go
 from dash import html, dcc
 import numpy as np
 
+# Provide information and shape parameter options for a chosen distribution
 def distribution_parameters(d, distribution, dist_type):
     # Distribution Header Text
     name = f"{d.__dict__['name']} | {d.a} to {d.b}"
@@ -58,7 +59,7 @@ def distribution_parameters(d, distribution, dist_type):
                 f"scipy.stats.{distribution}",
                 html.Img(
               src="https://docs.scipy.org/doc/scipy/_static/logo.svg",
-              title="open scipy docs to see properly formatted LaTeX",
+              title="open SciPy docs to see properly formatted LaTeX",
               style={'height':'30px','width':'auto', 'vertical-align':'bottom',
                      'margin-left':'15px'}
                          )
@@ -70,6 +71,8 @@ f"https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.{distribution
     return name, [info_link, html.Br(),dcc.Markdown(info_text)], sliders
 
 
+# Provide histgram and violin plots from chosen distribution and shape 
+# parameters, distribution of 5000 points generated to populate graphs
 def distribution_graph(d, distribution, parameters):  
     
     # validate shape parameters, provide indication on empty charts if invalid

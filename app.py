@@ -4,42 +4,29 @@ import plotly.graph_objects as go
 
 
 """Load in Distributions from Scipy"""
-# continuous distributions
-from scipy.stats import \
-    alpha, beta, cauchy, chi, chi2, cosine, crystalball, expon, exponnorm,\
-    f, fisk, gamma, laplace, levy, logistic, lognorm, loguniform, maxwell,\
-    mielke, moyal, nakagami, norm, pareto, powerlaw, rayleigh, rice,\
-    semicircular, t, trapezoid, weibull_min, weibull_max, uniform
-    
-continuous_distributions = [
-    alpha, beta, cauchy, chi, chi2, cosine, crystalball, expon, exponnorm,\
-    f, fisk, gamma, laplace, levy, logistic, lognorm, loguniform, maxwell,\
-    mielke, moyal, nakagami, norm, pareto, powerlaw, rayleigh, rice,\
-    semicircular, t, trapezoid, weibull_min, weibull_max, uniform
-                           ]
-# discrete distributions
-from scipy.stats import \
-    bernoulli, binom, betabinom, nbinom, boltzmann, geom, hypergeom, logser,\
-    nchypergeom_fisher, nchypergeom_wallenius, nhypergeom, planck, poisson,\
-    skellam, yulesimon, zipf, zipfian, randint
-    
-discrete_distributions = [
-    bernoulli, binom, betabinom, nbinom, boltzmann, geom, hypergeom, logser,
-    nchypergeom_fisher, nchypergeom_wallenius, nhypergeom, planck, poisson,
-    skellam, yulesimon, zipf, zipfian, randint    
-                          ]
+from scipy import stats
 distribution_names = {}
-distribution_names['continuous'] = {d.name:d for d in continuous_distributions}
-distribution_names['discrete'] = {d.name:d for d in discrete_distributions}
-del continuous_distributions, discrete_distributions
+
+# continuous distributions  
+distribution_names['continuous'] = {
+    name:obj for name, obj in stats.__dict__.items() 
+    if isinstance(obj, stats.rv_continuous)
+                           }
+# discrete distributions
+distribution_names['discrete'] = {
+    name:obj for name, obj in stats.__dict__.items() 
+    if isinstance(obj, stats.rv_discrete)
+                           }
+del stats
+
 
 """Dash Application, Page Layout"""
-app = Dash(__name__,  title="probability distributions")
+app = Dash(__name__,  title="Probability Distributions")
 
 app.layout = html.Div([ 
 
     # title
-    html.H1('Scipy Probability Distributions'),
+    html.H1('SciPy Probability Distributions'),
     dcc.Link(html.Img(src="https://www.svgrepo.com/show/449764/github.svg",
                       title="Source code",
                       style={'height':'30px','width':'auto'}),
@@ -90,7 +77,7 @@ app.layout = html.Div([
     Input({'type':'distribution-dropdown', 'index':ALL}, "value"), # distribution choice
 )
 def chosen_distribution(distribution): # add colorby later
-    if not distribution:
+    if not distribution or not ctx.triggered_id:
         return '','',[]
 
     if ctx.triggered_id.index == 'continuous':
@@ -127,8 +114,8 @@ Distribution Graph, updated with either sliders or inputs
     prevent_initial_call=True
 )
 def slider_graph(distribution, parameters):
-    if not distribution or not parameters:
-        return go.Figure(), go.Figure(), []
+    if not distribution or not parameters or not ctx.triggered_id:
+        return go.Figure(), go.Figure()
     
     trigger = ctx.triggered_id.index.split('_')[0]
     if  trigger == 'continuous':
@@ -150,8 +137,13 @@ def slider_graph(distribution, parameters):
     Input({'type':'parameter-input', 'index':ALL}, "value"), # parameter inputs
 )
 def input_graph(distribution, parameters):
-    if not distribution or not parameters:
-        return go.Figure(), go.Figure(), []
+    if not distribution or not parameters or not ctx.triggered_id:
+        return go.Figure().update_layout({
+            'paper_bgcolor':'black', 'font.color':'honeydew',
+            'title':'Choose a Probability Distribution above'
+                                        }), \
+               go.Figure().update_layout({'paper_bgcolor':'black'}), \
+               []
 
     trigger = ctx.triggered_id.index.split('_')[0]
     if  trigger == 'continuous':
@@ -165,6 +157,6 @@ def input_graph(distribution, parameters):
     return fig, fig2, parameters
 
 
-"""Deploy application, not needed with WSGI"""
-# if __name__ == '__main__':
-    # app.run_server(debug=False)
+"""Deploy application, not needed with WSGI. Note DEBUG setting!"""
+if __name__ == '__main__':
+    app.run_server(debug=True)

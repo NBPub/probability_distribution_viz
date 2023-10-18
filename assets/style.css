@@ -27,6 +27,12 @@ label, p {
 	right:20px;
 }
 
+#nav-crumbs {
+	text-align:center;
+	position: relative;
+	bottom: 70px;
+}
+
 input {
 	padding: 3px 0;
 	font-size:1.1em;
